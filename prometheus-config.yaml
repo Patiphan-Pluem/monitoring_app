@@ -22,7 +22,7 @@ data:
           source_labels: [__meta_kubernetes_node_address_InternalIP]
           target_label: __address__
           replacement: $1:10250
-      - job_name: kube-state-metrics
+      - job_name: 'kube-state-metrics'
         kubernetes_sd_configs:
         - role: pod
         relabel_configs:
@@ -30,7 +30,7 @@ data:
           regex: kube-state-metrics
           action: keep
         - source_labels: [__meta_kubernetes_pod_container_port_number]
-          regex: "8089"
+          regex: "8080"
           action: keep
 
 

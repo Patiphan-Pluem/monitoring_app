@@ -30,7 +30,7 @@ data:
           regex: kube-state-metrics
           action: keep
         - source_labels: [__meta_kubernetes_pod_container_port_number]
-          regex: "8080"
+          regex: "8089"
           action: keep
 
 

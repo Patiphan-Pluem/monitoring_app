@@ -1,3 +1,29 @@
+# --- ส่วนที่ 1: ClusterRole (เพื่อให้ Prometheus มองเห็น Pod และ Node) ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus-kubelet-metrics
+rules:
+  - apiGroups: [""]
+    # เพิ่ม pods และ endpoints เพื่อให้ดึงข้อมูลจาก kube-state-metrics ได้
+    resources:
+      ["nodes", "nodes/proxy", "nodes/metrics", "pods", "services", "endpoints"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-kubelet-metrics-binding
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-kubelet
+    namespace: monitoring
+roleRef:
+  kind: ClusterRole
+  name: prometheus-kubelet-metrics
+  apiGroup: rbac.authorization.k8s.io
+
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -32,9 +58,3 @@ data:
         - source_labels: [__meta_kubernetes_pod_container_port_number]
           regex: "8080"
           action: keep
-
-
-
-
-
-

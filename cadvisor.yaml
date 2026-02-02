@@ -22,6 +22,8 @@ spec:
           limits:
             cpu: 500m
             memory: 500Mi
+        securityContext:
+          privileged: true
         ports:
         - containerPort: 8080
           hostPort: 8080
@@ -32,8 +34,8 @@ spec:
           mountPath: /var/run:ro
         - name: sys
           mountPath: /sys:ro
-        - name: docker
-          mountPath: /var/lib/docker:ro
+        - name: containerd
+          mountPath: /var/lib/containerd:ro
       volumes:
       - name: rootfs
         hostPath:
@@ -44,6 +46,6 @@ spec:
       - name: sys
         hostPath:
           path: /sys
-      - name: docker
+      - name: containerd
         hostPath:
-          path: /var/lib/docker
+          path: /var/lib/rancher/k3s/agent/containerd

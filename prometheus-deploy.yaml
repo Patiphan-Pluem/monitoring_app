@@ -14,24 +14,26 @@ spec:
       labels:
         app: prometheus
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
       serviceAccountName: prometheus-kubelet
       automountServiceAccountToken: true
       containers:
-      - name: prometheus
-        image: prom/prometheus:v2.44.0
-        imagePullPolicy: IfNotPresent
-        args:
-        - "--config.file=/etc/prometheus/prometheus.yml"
-        - "--storage.tsdb.path=/prometheus/"
-        ports:
-        - containerPort: 9090
-        volumeMounts:
-        - name: config
-          mountPath: /etc/prometheus/
+        - name: prometheus
+          image: prom/prometheus:v2.44.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus/
       volumes:
-      - name: config
-        configMap:
-          name: prometheus-config
+        - name: config
+          configMap:
+            name: prometheus-config
 ---
 # Prometheus Service
 apiVersion: v1

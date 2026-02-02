@@ -43,21 +43,23 @@ spec:
       labels:
         app: grafana
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/control-plane: "true"
       securityContext:
         fsGroup: 472
       containers:
-      - name: grafana
-        image: grafana/grafana:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 3000
-        volumeMounts:
-        - name: grafana-storage
-          mountPath: /var/lib/grafana
+        - name: grafana
+          image: grafana/grafana:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
       volumes:
-      - name: grafana-storage
-        persistentVolumeClaim:
-          claimName: grafana-pvc
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-pvc
 ---
 # Grafana Service
 apiVersion: v1

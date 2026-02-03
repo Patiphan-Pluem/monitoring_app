@@ -47,7 +47,6 @@ metadata:
   namespace: monitoring
 spec:
   type: ClusterIP
-  externalTrafficPolicy: Local
   selector:
     app: prometheus
   ports:

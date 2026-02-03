@@ -14,6 +14,8 @@ spec:
       labels:
         app: prometheus
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         node-role.kubernetes.io/control-plane: "true"
       serviceAccountName: prometheus-kubelet
@@ -28,6 +30,7 @@ spec:
             - "--storage.tsdb.retention.time=7d"
           ports:
             - containerPort: 9090
+              hostPort: 9090
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus/
@@ -43,7 +46,7 @@ metadata:
   name: prometheus
   namespace: monitoring
 spec:
-  type: NodePort
+  type: ClusterIP
   externalTrafficPolicy: Local
   selector:
     app: prometheus
@@ -51,4 +54,3 @@ spec:
     - protocol: TCP
       port: 9090
       targetPort: 9090
-      nodePort: 31090

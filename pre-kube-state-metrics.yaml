@@ -10,10 +10,7 @@ metadata:
   name: kube-state-metrics
 rules:
 - apiGroups: [""]
-  resources:
-  - pods
-  - namespaces
-  - nodes
+  resources: ["nodes", "pods", "services", "endpoints", "namespaces", "persistentvolumeclaims", "replicationcontrollers"]
   verbs: ["list", "watch"]
 - apiGroups: ["apps"]
   resources:
@@ -26,6 +23,9 @@ rules:
   resources:
   - jobs
   - cronjobs
+  verbs: ["list", "watch"]
+- apiGroups: ["autoscaling"]
+  resources: ["horizontalpodautoscalers"]
   verbs: ["list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1

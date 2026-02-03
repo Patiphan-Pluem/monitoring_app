@@ -25,6 +25,7 @@ spec:
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus/"
+            - "--storage.tsdb.retention.time=7d"
           ports:
             - containerPort: 9090
           volumeMounts:
@@ -49,4 +50,4 @@ spec:
     - protocol: TCP
       port: 9090
       targetPort: 9090
-      nodePort: 30090
+      nodePort: 31090
